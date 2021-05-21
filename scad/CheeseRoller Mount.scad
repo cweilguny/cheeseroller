@@ -168,9 +168,9 @@ module ptfe_tube_hole_column(i) {
     xOffset = startX + i * (PTFE_TUBE_HOLE_DIAMETER + PTFE_TUBE_HOLE_GAP);
     yOffset = MOUNT_PLATE_DEPTH / 2;
     translate([xOffset, yOffset, 0])
-        ptfe_tube_hole(false, true);
+        ptfe_tube_hole(true, true);
     translate([xOffset, yOffset, MOUNT_PLATE_HEIGHT - ptfe_tube_hole_height()])
-        ptfe_tube_hole(true, false);
+        ptfe_tube_hole(true, true);
 
 }
 

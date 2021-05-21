@@ -1,0 +1,79 @@
+{
+  "command": "openscad",
+  "maxWorkers": 30,
+  "sets": {
+    "mm": [40, 45, 50, 55, 58, 60, 63, 65, 68, 70, 75, 80, 85, 90, 95, 100, 120, 140],
+    "hu": [2, 3]
+  },
+  "tasks": {
+    "arm": {
+      "title": "Arm @length@ @hu@U @side@",
+      "sets": {
+        "side": ["Left", "Right"],
+        "length": ["Standard", "Short"]
+      },
+      "run": ["hu", "side", "length"],
+      "commandArgs": [
+        "-o", "stl/CheeseRoller Arm @length@ @hu@U @side@.stl",
+        "-D", "LENGTH=\"@length@\"",
+        "-D", "HEIGHT_UNITS=@hu@",
+        "-D", "SIDE=\"@side@\"",
+        "scad/CheeseRoller Arm.scad"
+      ],
+      "createDirs": ["stl"]
+    },
+    "hook": {
+      "title": "Hook @hu@U",
+      "run": ["hu"],
+      "commandArgs": [
+        "-o", "stl/CheeseRoller Hook @hu@U.stl",
+        "-D", "HEIGHT_UNITS=@hu@",
+        "scad/CheeseRoller Hook.scad"
+      ],
+      "createDirs": ["stl"]
+    },
+    "mount": {
+      "title": "Mount @mm@mm @hu@U",
+      "run": ["mm", "hu"],
+      "commandArgs": [
+        "-o", "stl/CheeseRoller @mm@mm/CheeseRoller @mm@mm Mount @hu@U.stl",
+        "-D", "SPOOL_WIDTH=@mm@",
+        "-D", "HEIGHT_UNITS=@hu@",
+        "scad/CheeseRoller Mount.scad"
+      ],
+      "createDirs": ["stl/CheeseRoller @mm@mm"]
+    },
+    "connector": {
+      "title": "Connector @mm@mm",
+      "run": ["mm"],
+      "commandArgs": [
+        "-o", "stl/CheeseRoller @mm@mm/CheeseRoller @mm@mm Connector.stl",
+        "-D", "SPOOL_WIDTH=@mm@",
+        "scad/CheeseRoller Connector.scad"
+      ],
+      "createDirs": ["stl/CheeseRoller @mm@mm"]
+    },
+    "roll": {
+      "title": "Roll @mm@mm",
+      "run": ["mm"],
+      "commandArgs": [
+        "-o", "stl/CheeseRoller @mm@mm/CheeseRoller @mm@mm Roll.stl",
+        "-D", "SPOOL_WIDTH=@mm@",
+        "scad/CheeseRoller Roll.scad"
+      ],
+      "createDirs": ["stl/CheeseRoller @mm@mm"]
+    },
+    "pin": {
+      "title": "Pin @mm@mm",
+      "run": ["mm"],
+      "commandArgs": [
+        "-o",
+        "stl/CheeseRoller @mm@mm/CheeseRoller @mm@mm Pin.stl",
+        "-D",
+        "SPOOL_WIDTH=@mm@",
+        "scad/CheeseRoller Pin.scad"
+      ],
+      "createDirs": ["stl/CheeseRoller @mm@mm"]
+    }
+  }
+}

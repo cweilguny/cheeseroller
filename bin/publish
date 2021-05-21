@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+cd "${SCRIPT_DIR}/../" || exit
+
+mkdir -p publish
+
+rm -rf 'tmp/' 'publish/files/'
+mkdir -p 'tmp/CheeseRoller Sources' 'publish/files/'
+cp scad/*.scad 'tmp/CheeseRoller Sources'
+cd tmp || exit
+zip -r '../publish/files/CheeseRoller Sources.zip' 'CheeseRoller Sources'
+cd .. || exit
+
+mkdir -p tmp/stl_publish
+cp -r stl/* tmp/stl_publish/
+cd tmp/stl_publish/ || exit
+for d in CheeseRoller\ *mm
+do
+  cp *.stl "$d"
+  zip -r "../../publish/files/$d.zip" "$d"
+done
+
+cd ../../
+rm -rf 'tmp/'

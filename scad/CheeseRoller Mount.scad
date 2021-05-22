@@ -150,8 +150,6 @@ function ptfe_tube_hole_actual_count() = PTFE_TUBE_HOLE_COUNT == - 1
     ? floor((FRAME_INNER_WIDTH + PTFE_TUBE_HOLE_GAP - 2) / (PTFE_TUBE_HOLE_DIAMETER + PTFE_TUBE_HOLE_GAP))
     : PTFE_TUBE_HOLE_COUNT;
 
-function ptfe_tube_hole_height() = (MOUNT_PLATE_HEIGHT - CUTOUT_SLOT_HEIGHT) / HEIGHT_UNITS;
-
 module ptfe_tube_holes() {
     actual_count = ptfe_tube_hole_actual_count();
     if (actual_count != 0) {
@@ -168,38 +166,25 @@ module ptfe_tube_hole_column(i) {
     xOffset = startX + i * (PTFE_TUBE_HOLE_DIAMETER + PTFE_TUBE_HOLE_GAP);
     yOffset = MOUNT_PLATE_DEPTH / 2;
     translate([xOffset, yOffset, 0])
-        ptfe_tube_hole(true, true);
-    translate([xOffset, yOffset, MOUNT_PLATE_HEIGHT - ptfe_tube_hole_height()])
-        ptfe_tube_hole(true, true);
-
+        ptfe_tube_hole();
 }
 
-module ptfe_tube_hole(roundedTop, roundedBottom) {
+module ptfe_tube_hole() {
     rotate_extrude($fn = 36)
-        ptfe_tube_hole_profile(roundedTop, roundedBottom);
+        ptfe_tube_hole_profile();
 }
 
-module ptfe_tube_hole_profile(roundedTop, roundedBottom) {
+module ptfe_tube_hole_profile() {
     curve_r = PTFE_TUBE_HOLE_EDGE_RADIUS - PTFE_TUBE_HOLE_RADIUS;
     difference() {
-        square([PTFE_TUBE_HOLE_EDGE_RADIUS, ptfe_tube_hole_height()]);
+        square([PTFE_TUBE_HOLE_EDGE_RADIUS, MOUNT_PLATE_HEIGHT]);
         hull() {
-            if (roundedTop) {
-                translate([PTFE_TUBE_HOLE_EDGE_RADIUS, ptfe_tube_hole_height() - curve_r * 2, 0])
-                    scale([1, 2, 1])
-                        circle(r = curve_r);
-            } else {
-                translate([PTFE_TUBE_HOLE_RADIUS, curve_r * 2, 0])
-                    square([curve_r, ptfe_tube_hole_height() - curve_r]);
-            }
-            if (roundedBottom) {
-                translate([PTFE_TUBE_HOLE_EDGE_RADIUS, curve_r * 2, 0])
-                    scale([1, 2, 1])
-                        circle(r = curve_r);
-            } else {
-                translate([PTFE_TUBE_HOLE_RADIUS, 0, 0])
-                    square([curve_r, ptfe_tube_hole_height() - curve_r * 2]);
-            }
+            translate([PTFE_TUBE_HOLE_EDGE_RADIUS, MOUNT_PLATE_HEIGHT - curve_r * 2, 0])
+                scale([1, 2, 1])
+                    circle(r = curve_r);
+            translate([PTFE_TUBE_HOLE_EDGE_RADIUS, curve_r * 2, 0])
+                scale([1, 2, 1])
+                    circle(r = curve_r);
         }
     }
 }
@@ -207,7 +192,6 @@ module ptfe_tube_hole_profile(roundedTop, roundedBottom) {
 
 // ### CUTOUTS
 module mount_plate_cutouts() {
-    bottom_z = MOUNT_PLATE_HEIGHT / 2 - CUTOUT_SLOT_HEIGHT / 2;
     outerWallWidth = ((FRAME_INNER_WIDTH + HOOK_GAP_H - wall_hook_count() * (HOOK_GAP_H + HOOK_W)) / 2);
     isOuterWallTooSmall = outerWallWidth < WALL_HOOK_MIN_INSET;
     for (i = [0 : wall_hook_count()]) {
@@ -217,12 +201,21 @@ module mount_plate_cutouts() {
             x = i == 0
                 ? CUTOUT_SLOT_INSET
                 : outerWallWidth + (HOOK_GAP_H + HOOK_W) * (i - 1) + HOOK_W + CUTOUT_SLOT_INSET;
-            translate([x, 0, bottom_z])
-                cube([width, HOOK_W * 2, CUTOUT_SLOT_HEIGHT]);
+            mount_plate_cutout_column(width, x);
         }
     }
 }
 
+module mount_plate_cutout_column(width, x) {
+    bottom_z = MOUNT_PLATE_HEIGHT / 2 - CUTOUT_SLOT_HEIGHT / 2;
+    height_single = CUTOUT_SLOT_HEIGHT * 0.7 / HEIGHT_UNITS;
+    height_spacing = CUTOUT_SLOT_HEIGHT * 0.3 / (HEIGHT_UNITS - 1);
+    for (i = [0 : HEIGHT_UNITS - 1]) {
+        z_offset = i * (height_single + height_spacing);
+        translate([x, 0, bottom_z + z_offset])
+            cube([width, HOOK_W * 2, height_single], 1);
+    }
+}
 
 // ### LABEL
 module labels() {

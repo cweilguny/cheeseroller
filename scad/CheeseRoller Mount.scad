@@ -12,8 +12,8 @@ PTFE_TUBE_HOLE_GAP = 6;
 // Print spool width label?
 PRINT_LABEL = true;
 // Font string for the mm label
-LABEL_FONT = "Montserrat Alternates:style=Bold";
-// ["Montserrat Alternates:style=Bold", "sans-serif:style=Bold", "monospace:style=Bold"]
+LABEL_FONT = "Montserrat:style=Bold";
+// ["Montserrat:style=Bold", "sans-serif:style=Bold", "monospace:style=Bold"]
 // Overrides LABEL_FONT, allows to set a custom font string
 LABEL_FONT_CUSTOM = "";
 // Render in print orientation (lying flat)

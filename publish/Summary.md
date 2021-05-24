@@ -28,8 +28,14 @@
 
 # Part selection
 
-Select the parts needed, swap **XX** with your spool width (measured from outside
-to outside):
+Download the ZIP for your spool width measured from outside to outside, use
+the next 5 mm step if your spool width is between the available sizes.
+For example `CheeseRoller 68mm.zip` for a spool with 68 mm width, or
+`CheeseRoller 55mm.zip` for a spool with 52 mm spool width.
+
+Each ZIP contains all parts for the variations that can be printed for the
+downloaded spool width. Select the parts inside the ZIP by the following guide,
+swap **XX** with your spool width:
 
 - 1x Arm Left, print with **20% infill**, choose between:
   - `CheeseRoller Arm Standard 2U Left.stl`: 200mm spools, 2 Skadis holes high

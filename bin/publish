@@ -6,7 +6,7 @@ cd "${SCRIPT_DIR}/../" || exit
 
 rm -rf 'tmp/' 'publish/files/'
 mkdir -p 'tmp/CheeseRoller Sources' 'publish/files/'
-cp scad/*.scad 'tmp/CheeseRoller Sources'
+cp -r scad/*.scad scad/includes 'tmp/CheeseRoller Sources'
 cd tmp || exit
 zip -r '../publish/files/CheeseRoller Sources.zip' 'CheeseRoller Sources'
 cd .. || exit
